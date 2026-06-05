@@ -6,9 +6,9 @@ import java.util.function.Consumer;
 
 public class Tabuleiro implements CampoObservador {
 
-	private int linhas;
-	private int colunas;
-	private int minas;
+	private final int linhas;
+	private final int colunas;
+	private final int minas;
 	
 	private List<Campo> campos = new ArrayList<Campo>();
 	private List<Consumer<ResultadoEvento>> observadores = new ArrayList<>();
@@ -24,6 +24,23 @@ public class Tabuleiro implements CampoObservador {
 		sortearMinas();
 	}
 	
+	
+	public void paraCada(Consumer<Campo> funcao) {
+		campos.forEach(funcao);
+	}
+	
+	public int getLinhas() {
+		return linhas;
+	}
+
+
+
+	public int getColunas() {
+		return colunas;
+	}
+
+
+
 	public void registrarObservadores(Consumer<ResultadoEvento> observador) {
 		observadores.add(observador);
 	}
@@ -117,7 +134,10 @@ public class Tabuleiro implements CampoObservador {
 	}
 	
 	private void mostrarMinas() {
-		campos.stream().filter(c -> c.isMinado()).forEach(c -> c.setAberto(true));
+		campos.stream()
+		.filter(c -> c.isMinado())
+		.filter(c -> !c.isMarcado())
+		.forEach(c -> c.setAberto(true));
 	}
 	
 

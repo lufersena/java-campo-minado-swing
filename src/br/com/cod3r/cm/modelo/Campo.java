@@ -50,7 +50,7 @@ public class Campo {
 		}
 	}
 	
-	void alternarMarcacao() { 
+	public void alternarMarcacao() { 
 		if(!aberto) { //se nao aberto
 			marcado = !marcado;// se estiver false retorna true, se estiver true retornar false
 			
@@ -63,7 +63,7 @@ public class Campo {
 		}
 	}
 	
-	boolean abrir() {
+	public boolean abrir() {
 		if(!aberto && !marcado) {
 		
 			if(minado) { //explode se estiver minado
@@ -83,7 +83,7 @@ public class Campo {
 		
 	}
 
-	boolean vizinhancaSegura() { //abre os campos seguros
+	public boolean vizinhancaSegura() { //abre os campos seguros
 		return vizinhos.stream().noneMatch(v -> v.minado); // expessao lambda onde se nenhum vizinho cair no predicado a vizinhança é segura(false retorna pelo menos uma mina, não segura) 
 	}
 
@@ -127,14 +127,16 @@ public class Campo {
 		return desvendado || protegido;
 	}
 	
-	long minasVizinhanca() {
-		return vizinhos.stream().filter(v -> v.minado).count(); // descobre quantas minas existem na vizinhança 
+	public int minasVizinhanca() {
+		return (int)vizinhos.stream().filter(v -> v.minado).count(); // descobre quantas minas existem na vizinhança 
 	}
 	
 	void reiniciar() {
 		aberto = false;
 		minado = false;
 		marcado = false;
+		notificarObservadores(CampoEvento.REINICIAR);
+		
 	}
 	
 }
